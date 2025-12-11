@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une visite{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h1>Modifier la visite pour {{ etudiant.nom }} {{ etudiant.prenom }}</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_label(form.date) }}
+                    {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.date) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.commentaire) }}
+                    {{ form_widget(form.commentaire, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.commentaire) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.compteRendu) }}
+                    {{ form_widget(form.compteRendu, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.compteRendu) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.statut) }}
+                    {{ form_widget(form.statut, {'attr': {'class': 'form-select'}}) }}
+                    {{ form_errors(form.statut) }}
+                </div>
+                <button class="btn btn-success" type="submit">Enregistrer</button>
+                <a href="{{ path('visites_index', {'id': etudiant.id}) }}" class="btn btn-secondary">Retour aux visites</a>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

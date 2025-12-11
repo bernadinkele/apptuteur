@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Dashboard du Tuteur</h1>
+
+    <!-- Barre de navigation / Déconnexion -->
+    <nav class="mb-4">
+        <form action="{{ path('logout') }}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Déconnexion</button>
+        </form>
+    </nav>
+
+    <!-- Informations personnelles -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h2>Informations personnelles</h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Nom :</strong> {{ tuteur.nom }}</li>
+                <li class="list-group-item"><strong>Prénom :</strong> {{ tuteur.prenom }}</li>
+                <li class="list-group-item"><strong>Email :</strong> {{ tuteur.email }}</li>
+                <li class="list-group-item"><strong>Téléphone :</strong> {{ tuteur.telephone }}</li>
+                <li class="list-group-item"><strong>Entreprise :</strong> {{ tuteur.entreprise ?: 'Non renseignée' }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Étudiants suivis -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2>Étudiants suivis</h2>
+            <a href="{{ path('etudiants_new') }}" class="btn btn-primary btn-sm">Ajouter un étudiant</a>
+        </div>
+        <div class="card-body">
+            {% if etudiants %}
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Formation</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for etudiant in etudiants %}
+                            <tr>
+                                <td>{{ etudiant.nom }}</td>
+                                <td>{{ etudiant.prenom }}</td>
+                                <td>{{ etudiant.formation }}</td>
+                                <td>
+                                    <a href="{{ path('visites_index', {'id': etudiant.id}) }}" class="btn btn-info btn-sm">Voir visites</a>
+                                    <a href="{{ path('visites_new', {'id': etudiant.id}) }}" class="btn btn-success btn-sm">Ajouter visite</a>
+                                    <a href="{{ path('etudiants_edit', {'id': etudiant.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aucun étudiant pour le moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Prochaines visites -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h2>Prochaines visites</h2>
+        </div>
+        <div class="card-body">
+            {% if prochainesVisites %}
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Étudiant</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for visite in prochainesVisites %}
+                            {% set statutClass = visite.statut.name == 'PREVUE' ? 'text-primary' : visite.statut.name == 'REALISEE' ? 'text-success' : 'text-danger' %}
+                            <tr>
+                                <td>
+                                    {{ visite.date|date('l j F Y H:i')|capitalize }}
+                                    {# Exemple : Lundi 11 Décembre 2025 14:30 #}
+                                </td>
+                                <td>{{ visite.etudiant ? visite.etudiant.nom ~ ' ' ~ visite.etudiant.prenom : 'Étudiant non assigné' }}</td>
+                                <td class="{{ statutClass }}"><strong>{{ visite.statut.name|capitalize }}</strong></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Aucune visite planifiée.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

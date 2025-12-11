@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des étudiants{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Étudiants</h1>
+        <a href="{{ path('etudiants_new') }}" class="btn btn-success">Ajouter un étudiant</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Formation</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etudiant in etudiants %}
+                    <tr>
+                        <td>{{ etudiant.nom }}</td>
+                        <td>{{ etudiant.prenom }}</td>
+                        <td>{{ etudiant.formation }}</td>
+                        <td>
+                            <a href="{{ path('visites_index', {'id': etudiant.id}) }}" class="btn btn-info btn-sm">Voir visites</a>
+                            <a href="{{ path('visites_new', {'id': etudiant.id}) }}" class="btn btn-primary btn-sm">Ajouter visite</a>
+                            <a href="{{ path('etudiants_edit', {'id': etudiant.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">Aucun étudiant pour le moment.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

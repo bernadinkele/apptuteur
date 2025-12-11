@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un étudiant{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Modifier l'étudiant</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                            {{ form_label(form.nom) }}
+                            {{ form_errors(form.nom) }}
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'placeholder': 'Prénom'}}) }}
+                            {{ form_label(form.prenom) }}
+                            {{ form_errors(form.prenom) }}
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.formation, {'attr': {'class': 'form-control', 'placeholder': 'Formation'}}) }}
+                            {{ form_label(form.formation) }}
+                            {{ form_errors(form.formation) }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-success btn-lg" type="submit">Enregistrer</button>
+                        </div>
+                    {{ form_end(form) }}
+
+                    <a href="{{ path('etudiants_index') }}" class="btn btn-secondary btn-sm mt-3">Retour à la liste</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
