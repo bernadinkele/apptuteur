@@ -7,12 +7,11 @@ use App\Repository\TuteurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 
 #[ORM\Entity(repositoryClass: TuteurRepository::class)]
 #[ApiResource]
-class Tuteur implements UserInterface, PasswordAuthenticatedUserInterface
+class Tuteur 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,11 +33,7 @@ class Tuteur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $telephone = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
-
-    #[ORM\Column(type: "json")]
-    private array $roles = [];
+   
 
     /**
      * @var Collection<int, Visite>
@@ -58,17 +53,7 @@ class Tuteur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->etudiants = new ArrayCollection();
     }
 
-    // ---------------- PasswordAuthenticatedUserInterface ----------------
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-        return $this;
-    }
+  
 
     // ---------------- UserInterface ----------------
     public function getUserIdentifier(): string
@@ -76,21 +61,7 @@ class Tuteur implements UserInterface, PasswordAuthenticatedUserInterface
         return (string) $this->email;
     }
 
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // garantir que chaque tuteur a au moins ROLE_TUTEUR
-        $roles[] = 'ROLE_TUTEUR';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
+  
 
     public function eraseCredentials(): void
     {
